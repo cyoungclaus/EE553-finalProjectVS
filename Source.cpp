@@ -89,8 +89,14 @@ class Song : public Playlist {		// for indiv songs
 };
 
 void Queue(Playlist p) {
-	mciSendString("play songs\FollowYou.wav wait", NULL, 0, 0);
+	string base = "open " + p.wav[0] + " type waveaudio alias voice1";
+	LPCSTR base2 = base.c_str();
 
+	mciSendString(base2, 0, 0, 0);
+
+	//mciSendString(base, 0&, 0, 0);
+	mciSendString("play voice1 wait", 0, 0, 0);
+	//Sleep(5000);
 	//for (auto &song : p.wav) {}
 }
 
@@ -135,6 +141,7 @@ void decision(Playlist p) {
 int main() {
 	
 	Playlist p("songs");
+	p.test();
 	Queue(p);
 	
 
