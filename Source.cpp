@@ -76,7 +76,7 @@ public:
 		//	restart song/go back one song
 	}
 
-	void test() {			// delete before submission
+	void displayFolder() {			
 		for (int i = 0; i < wav.size(); i++) {
 			cout << wav[i] << endl;
 		}
@@ -100,60 +100,71 @@ void Queue(Playlist p) {
 	//for (auto &song : p.wav) {}
 }
 
-/*
+
 void introGUI() {
 	cout << "**********" << endl;
 	cout << "Welcome to our project!" << endl;;
-	cout << "Please type in the number of the song you want to play: " << endl;
-	cout << left << setfill('.') << setw(30) << "1 for" << right << setfill('.') << setw(20) << "'Follow You' by Imagine Dragons" << endl;
-	cout << left << setfill('.') << setw(30) << "2 for" << right << setfill('.') << setw(20) << "'good 4 u' by Olivia Rodrigo" << endl;
+	cout << "Reading from the 'songs' folder: " << endl;
+	cout << left << setfill('.') << setw(30) << "1 for" << right << setfill('.') << setw(20) << "Displaying the folder" << endl;
+	cout << left << setfill('.') << setw(30) << "2 for" << right << setfill('.') << setw(20) << "Playing the queue in order" << endl;
+	cout << left << setfill('.') << setw(30) << "3 for" << right << setfill('.') << setw(20) << "Playing the queue in random order" << endl;
 	cout << "**********" << endl;
 	cout << "For playback controls: " << endl;
-	cout << left << setfill('.') << setw(30) << "3 for" << right << setfill('.') << setw(20) << "Stopping the currently playing song" << endl;
+	cout << left << setfill('.') << setw(30) << "4 for" << right << setfill('.') << setw(20) << "Pausing the currently playing song" << endl;
+	cout << left << setfill('.') << setw(30) << "5 for" << right << setfill('.') << setw(20) << "Resuming the currently playing song" << endl;
+	cout << left << setfill('.') << setw(30) << "6 for" << right << setfill('.') << setw(20) << "Skipping to the next song" << endl;
+	cout << left << setfill('.') << setw(30) << "7 for" << right << setfill('.') << setw(20) << "Restart the currently playing song" << endl;
+
+
 
 }
 
-int choice;
 
-void decision(Playlist p) {
-	switch (choice) {
-	case 1:
-		PlaySound(TEXT("Follow You.wav"), NULL, SND_ASYNC);
-		cout << "Playing 'Follow You' by Imagine Dragons!" << endl;
-		break;
-	case 2:
 
-		PlaySound(TEXT("good 4 u.wav"), NULL, SND_ASYNC);
-		cout << "Playing 'good 4 u' by Olivia Rodrigo!" << endl;
 
-		break;
-	case 3:
-		p.stop();
-		cout << "Stopped the song being played!" << endl;
-		break;
-	default:
-		cout << "Bad choice! Please try again: " << endl;
-		break;
-	}
-}
-*/
 
 int main() {
 	
 	Playlist p("songs");
-	p.test();
-	Queue(p);
+	//Queue(p);
 	
-
-	/*
+	int choice;
+	
 	bool loop = true;
 	introGUI();
 	while (loop) {
 		cin >> choice;
-		decision();
+		switch (choice) {
+		case 1:
+			cout << "Displaying the songs within the folder: " << endl;
+			p.displayFolder();
+			break;
+		case 2:
+			cout << "Playing the queue in order! " << endl;
+			break;
+		case 3:
+			cout << "Pleaying the queue in random order! " << endl;
+			break;
+		case 4:
+			cout << "Pausing the current playing song! " << endl;
+			break;
+		case 5:
+			cout << "Resuming the current playing song! " << endl;
+			break;
+		case 6:
+			cout << "Skipping to the next song! " << endl;
+			break;
+		case 7:
+			cout << "Restarting the current playing song! " << endl;
+			break;
+
+		default:
+			cout << "Bad choice! Please try again: " << endl;
+			break;
+		}
 
 	}
-	*/
+	
 
 
 	/*
