@@ -95,7 +95,7 @@ void Queue(Playlist p) {
 	mciSendString(base2, 0, 0, 0);
 
 	//mciSendString(base, 0&, 0, 0);
-	mciSendString("play voice1 wait", 0, 0, 0);
+	mciSendString("play voice1", 0, 0, 0);
 	//Sleep(5000);
 	//for (auto &song : p.wav) {}
 }
@@ -106,8 +106,9 @@ void introGUI() {
 	cout << "Welcome to our project!" << endl;;
 	cout << "Reading from the 'songs' folder: " << endl;
 	cout << left << setfill('.') << setw(30) << "1 for" << right << setfill('.') << setw(20) << "Displaying the folder" << endl;
-	cout << left << setfill('.') << setw(30) << "2 for" << right << setfill('.') << setw(20) << "Playing the queue in order" << endl;
-	cout << left << setfill('.') << setw(30) << "3 for" << right << setfill('.') << setw(20) << "Playing the queue in random order" << endl;
+	cout << left << setfill('.') << setw(30) << "2 for" << right << setfill('.') << setw(20) << "Playing a specific song" << endl;
+	cout << left << setfill('.') << setw(30) << "3 for" << right << setfill('.') << setw(20) << "Playing the queue in order" << endl;
+	cout << left << setfill('.') << setw(30) << "4 for" << right << setfill('.') << setw(20) << "Playing the queue in random order" << endl;
 	cout << "**********" << endl;
 	cout << "For playback controls: " << endl;
 	cout << left << setfill('.') << setw(30) << "4 for" << right << setfill('.') << setw(20) << "Pausing the currently playing song" << endl;
@@ -129,6 +130,7 @@ int main() {
 	//Queue(p);
 	
 	int choice;
+	string songChoice;
 	
 	bool loop = true;
 	introGUI();
@@ -140,21 +142,27 @@ int main() {
 			p.displayFolder();
 			break;
 		case 2:
-			cout << "Playing the queue in order! " << endl;
+			cout << "What song? " << endl;
+			cin >> songChoice;
+			cout << "Playing : " << songChoice << endl;
 			break;
 		case 3:
-			cout << "Pleaying the queue in random order! " << endl;
+			cout << "Playing the queue in order! " << endl;
+			Queue(p);
 			break;
 		case 4:
-			cout << "Pausing the current playing song! " << endl;
+			cout << "Pleaying the queue in random order! " << endl;
 			break;
 		case 5:
-			cout << "Resuming the current playing song! " << endl;
+			cout << "Pausing the current playing song! " << endl;
 			break;
 		case 6:
-			cout << "Skipping to the next song! " << endl;
+			cout << "Resuming the current playing song! " << endl;
 			break;
 		case 7:
+			cout << "Skipping to the next song! " << endl;
+			break;
+		case 8:
 			cout << "Restarting the current playing song! " << endl;
 			break;
 
