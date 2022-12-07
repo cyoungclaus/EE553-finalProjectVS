@@ -131,11 +131,11 @@
     <None Include="..\EE553-finalProject\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\EE553-finalProject\Source.cpp" />
+    <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Media Include="..\EE553-finalProject\songs\Follow You.wav" />
-    <Media Include="..\EE553-finalProject\songs\good 4 u.wav" />
+    <Media Include="songs\FollowYou.wav" />
+    <Media Include="songs\good4u.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

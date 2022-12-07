@@ -49,8 +49,6 @@ public:
 		fillwav();
 	}
 
-	~Playlist();
-
 	void setFolder(string userpath) {	// change PATH after initialization
 		wav.clear();
 		PATH = userpath;
@@ -91,7 +89,7 @@ class Song : public Playlist {		// for indiv songs
 };
 
 void Queue(Playlist p) {
-	mciSendString("play FollowYou.wav wait", NULL, 0, 0);
+	mciSendString("play songs\FollowYou.wav wait", NULL, 0, 0);
 
 	//for (auto &song : p.wav) {}
 }
@@ -135,9 +133,10 @@ void decision(Playlist p) {
 */
 
 int main() {
+	
 	Playlist p("songs");
-	p.test();
-
+	Queue(p);
+	
 
 	/*
 	bool loop = true;
@@ -152,7 +151,7 @@ int main() {
 
 	/*
 	introGUI();
-	PlaySound(TEXT("Follow You.wav"), NULL, SND_ASYNC);
+	PlaySound("songs\\FollowYou.wav", NULL, SND_ASYNC);
 	Sleep(5000);
 	PlaySound(NULL, 0, 0);
 	*/

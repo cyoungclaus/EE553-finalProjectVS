@@ -13,21 +13,24 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Resource Files\songs">
+      <UniqueIdentifier>{65da9dcd-0c27-4029-84bb-10afbb11a2cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\EE553-finalProject\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\EE553-finalProject\Source.cpp">
+    <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Media Include="..\EE553-finalProject\songs\Follow You.wav">
-      <Filter>Resource Files</Filter>
+    <Media Include="songs\good4u.wav">
+      <Filter>Resource Files\songs</Filter>
     </Media>
-    <Media Include="..\EE553-finalProject\songs\good 4 u.wav">
-      <Filter>Resource Files</Filter>
+    <Media Include="songs\FollowYou.wav">
+      <Filter>Resource Files\songs</Filter>
     </Media>
   </ItemGroup>
 </Project>
