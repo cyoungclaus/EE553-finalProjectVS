@@ -193,7 +193,8 @@ void introGUI() {
 	cout << left << setfill('.') << setw(30) << "5 for" << right << setfill('.') << setw(20) << "Pausing the currently playing song" << endl;
 	cout << left << setfill('.') << setw(30) << "6 for" << right << setfill('.') << setw(20) << "Resuming the currently playing song" << endl;
 	cout << left << setfill('.') << setw(30) << "7 for" << right << setfill('.') << setw(20) << "Skipping to the next song" << endl;
-	cout << left << setfill('.') << setw(30) << "8 for" << right << setfill('.') << setw(20) << "Restart the currently playing song" << endl;
+	cout << left << setfill('.') << setw(30) << "8 for" << right << setfill('.') << setw(20) << "Restarting the currently playing song" << endl;
+	cout << left << setfill('.') << setw(30) << "8 for" << right << setfill('.') << setw(20) << "Ending the current queue" << endl;
 }
 
 int main() {
@@ -246,7 +247,10 @@ int main() {
 			cout << "Restarting the current playing song! " << endl;
 			p.Prev();
 			break;
-
+		case 9:
+			cout << "Ending the queue." << endl;
+			p.Stop();
+			break;
 		default:
 			cout << "Bad choice! Please try again: " << endl;
 			break;
