@@ -15,14 +15,9 @@ using namespace std;
 /*
 In order for program to be able to compile, you need to use
 Multi-Byte char instead of Wide char.
-
 Project Properties -> Advanced
 	-> Character Set option to Use Multi-Byte Character Set
-
-
-
 Also to use filesystem, make sure compiler is using at least C++ Version 17
-
 Project Properties -> General -> C++ Language Standard
 */
 
@@ -39,7 +34,6 @@ bool loop = false;
 
 class Playlist {
 private:
-	int count = 0;
 	int error, NowPlaying;
 	bool Paused;
 
@@ -139,8 +133,8 @@ public:
 	}
 
 	void Quit() {							// quits out of queue
+		Stop();
 		track = 0;
-		count = 0;
 		Paused = false;
 	}
 
@@ -186,14 +180,13 @@ void introGUI() {
 	cout << "Reading from the 'songs' folder: " << endl;
 	cout << left << setfill('.') << setw(30) << "1 for" << right << setfill('.') << setw(20) << "Changing playlists" << endl;
 	cout << left << setfill('.') << setw(30) << "2 for" << right << setfill('.') << setw(20) << "Displaying the current playlist" << endl;
-	cout << left << setfill('.') << setw(30) << "3 for" << right << setfill('.') << setw(20) << "Playing a song from the playlist" << endl;
-	cout << left << setfill('.') << setw(30) << "4 for" << right << setfill('.') << setw(20) << "Playing the playlist in order" << endl;
+	cout << left << setfill('.') << setw(30) << "3 for" << right << setfill('.') << setw(20) << "Playing the playlist in order" << endl;
 	cout << "**********" << endl;
 	cout << "For playback controls: " << endl;
-	cout << left << setfill('.') << setw(30) << "5 for" << right << setfill('.') << setw(20) << "Pausing the currently playing song" << endl;
-	cout << left << setfill('.') << setw(30) << "6 for" << right << setfill('.') << setw(20) << "Resuming the currently playing song" << endl;
-	cout << left << setfill('.') << setw(30) << "7 for" << right << setfill('.') << setw(20) << "Skipping to the next song" << endl;
-	cout << left << setfill('.') << setw(30) << "8 for" << right << setfill('.') << setw(20) << "Restarting the currently playing song" << endl;
+	cout << left << setfill('.') << setw(30) << "4 for" << right << setfill('.') << setw(20) << "Pausing the currently playing song" << endl;
+	cout << left << setfill('.') << setw(30) << "5 for" << right << setfill('.') << setw(20) << "Resuming the currently playing song" << endl;
+	cout << left << setfill('.') << setw(30) << "6 for" << right << setfill('.') << setw(20) << "Skipping to the next song" << endl;
+	cout << left << setfill('.') << setw(30) << "7 for" << right << setfill('.') << setw(20) << "Restarting the currently playing song" << endl;
 	cout << left << setfill('.') << setw(30) << "8 for" << right << setfill('.') << setw(20) << "Ending the current queue" << endl;
 }
 
@@ -223,33 +216,28 @@ int main() {
 			p.displayFolder();
 			break;
 		case 3:
-			cout << "What song? " << endl;
-			cin >> songChoice;
-			cout << "Playing : " << songChoice << endl;
-			break;
-		case 4:
 			cout << "Playing the queue in order! " << endl;
 			Queue(p);
 			break;
-		case 5:
+		case 4:
 			cout << "Pausing the current playing song! " << endl;
 			p.Pause();
 			break;
-		case 6:
+		case 5:
 			cout << "Resuming the current playing song! " << endl;
 			p.Pause();
 			break;
-		case 7:
+		case 6:
 			cout << "Skipping to the next song! " << endl;
 			p.Skip();
 			break;
-		case 8:
+		case 7:
 			cout << "Restarting the current playing song! " << endl;
 			p.Prev();
 			break;
-		case 9:
+		case 8:
 			cout << "Ending the queue." << endl;
-			p.Stop();
+			p.Quit();
 			break;
 		default:
 			cout << "Bad choice! Please try again: " << endl;

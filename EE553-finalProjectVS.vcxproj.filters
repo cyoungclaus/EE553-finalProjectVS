@@ -32,5 +32,8 @@
     <Media Include="songs\FollowYou.wav">
       <Filter>Resource Files\songs</Filter>
     </Media>
+    <Media Include="songs\kanye.mp3">
+      <Filter>Resource Files\songs</Filter>
+    </Media>
   </ItemGroup>
 </Project>
