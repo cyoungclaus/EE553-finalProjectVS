@@ -5,11 +5,12 @@
 #include <ios>
 #include <vector>
 #include <filesystem>
+#include <algorithm>
+#include <random>
 
 #pragma comment(lib, "Winmm.lib")
 
 using namespace std;
-namespace fs = std::filesystem;
 
 /*
 In order for program to be able to compile, you need to use
@@ -25,11 +26,24 @@ Also to use filesystem, make sure compiler is using at least C++ Version 17
 Project Properties -> General -> C++ Language Standard
 */
 
+// used with mciSendString
+string base = "";
+LPCSTR command = "";
+
+// default path
+string DEFAULT = "songs";
+
+int choice, track;
+string songChoice, PATH;
+bool loop = false;
+
 class Playlist {
 private:
 	int count = 0;
-
-	void fillwav() {
+	int error, NowPlaying;
+	bool Paused;
+	
+	void fillwav() {		// fills wav vertex with files in directory
 		for (const auto& entry : filesystem::directory_iterator(PATH)) {
 			wav.push_back(entry.path().string());
 		}
@@ -37,10 +51,9 @@ private:
 
 public:
 	vector<string> wav;
-	string PATH;
 
 	Playlist() {				// add songs in predetermined directory to vector
-		PATH = "songs";
+		PATH = DEFAULT;
 		fillwav();
 	}
 
@@ -55,112 +68,190 @@ public:
 		fillwav();
 	}
 
-	void play() {		//	play song
-
+	void Close() {					// closes active media file
+		mciSendString("close MediaFile", 0, 0, 0);
 	}
 
-	void pause() {
-		// pause song
+	bool Open(string fileName) {			// opens media file for use
+		base = "";
+		command = "";
+
+		base = "open " + fileName + " type waveaudio alias MediaFile";
+
+		command = base.c_str();
+		error = mciSendString(command, 0, 0, 0);
+
+		if (error != 0) {
+			base = "open " + fileName + " alias MediaFile";
+			command = base.c_str();
+			error = mciSendString(command, 0, 0, 0);
+
+			if (error == 0) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		else {
+			return true;
+		}
 	}
 
-	void stop() {
-		//	 stop song
-		PlaySound(NULL, 0, 0);
+	bool Play() {						//	play song
+		if (Open(wav[track])) {
+			command = "play MediaFile";
+			error = mciSendString(command, 0, 0, 0);
+
+			if (error == 0) {
+				NowPlaying = track;
+				return true;
+			}
+			else {
+				Close();
+				return false;
+			}
+		}
+		else {
+			return false;
+		}
 	}
 
-	void skip() {
-		//	skip song
+	void Pause() {					// pauses active file
+		if (Paused) {
+			command = "resume MediaFile";
+			error = mciSendString(command, 0, 0, 0);
+
+			Paused = false;
+		}
+		else {
+			command = "pause MediaFile";
+			error = mciSendString(command, 0, 0, 0);
+			Paused = true;
+		}
 	}
 
-	void prev() {
-		//	restart song/go back one song
+	void Stop() {							// stops song
+		command = "stop MediaFile";
+		error = mciSendString(command, 0, 0, 0);
+		Paused = false;
+		Close();
 	}
 
-	void test() {			// delete before submission
+	void Quit() {							// quits out of queue
+		track = 0;
+		count = 0;
+		Paused = false;
+	}
+
+	void Skip() {							// skips song
+		Stop();
+		track = track + 1;
+
+		if (track == wav.size()) {
+			cout << "Playlist End" << endl;
+			Quit();
+		}
+		else {
+			Play();
+		}
+	}
+
+	void Prev() {					// restarts song
+		Stop();
+		Play();
+	}
+
+	void displayFolder() {			// see whats being written to wav vector
 		for (int i = 0; i < wav.size(); i++) {
 			cout << wav[i] << endl;
 		}
 	}
+};
+
+// would be used for playing a single wav file without initializing a playlist
+class Song : public Playlist {
 
 };
 
-class Song : public Playlist {		// for indiv songs
-
-};
-
-void Queue(Playlist p) {
-	string base = "open " + p.wav[0] + " type waveaudio alias voice1";
-	LPCSTR base2 = base.c_str();
-
-	mciSendString(base2, 0, 0, 0);
-
-	//mciSendString(base, 0&, 0, 0);
-	mciSendString("play voice1 wait", 0, 0, 0);
-	//Sleep(5000);
-	//for (auto &song : p.wav) {}
+void Queue(Playlist p) {						// plays folder in order
+	for (int i = 0; i < p.wav.size(); i++) {
+		p.Play();
+	}
 }
 
-/*
 void introGUI() {
 	cout << "**********" << endl;
 	cout << "Welcome to our project!" << endl;;
-	cout << "Please type in the number of the song you want to play: " << endl;
-	cout << left << setfill('.') << setw(30) << "1 for" << right << setfill('.') << setw(20) << "'Follow You' by Imagine Dragons" << endl;
-	cout << left << setfill('.') << setw(30) << "2 for" << right << setfill('.') << setw(20) << "'good 4 u' by Olivia Rodrigo" << endl;
+	cout << "Reading from the 'songs' folder: " << endl;
+	cout << left << setfill('.') << setw(30) << "1 for" << right << setfill('.') << setw(20) << "Changing playlists" << endl;
+	cout << left << setfill('.') << setw(30) << "2 for" << right << setfill('.') << setw(20) << "Displaying the current playlist" << endl;
+	cout << left << setfill('.') << setw(30) << "3 for" << right << setfill('.') << setw(20) << "Playing a song from the playlist" << endl;
+	cout << left << setfill('.') << setw(30) << "4 for" << right << setfill('.') << setw(20) << "Playing the playlist in order" << endl;
 	cout << "**********" << endl;
 	cout << "For playback controls: " << endl;
-	cout << left << setfill('.') << setw(30) << "3 for" << right << setfill('.') << setw(20) << "Stopping the currently playing song" << endl;
-
+	cout << left << setfill('.') << setw(30) << "5 for" << right << setfill('.') << setw(20) << "Pausing the currently playing song" << endl;
+	cout << left << setfill('.') << setw(30) << "6 for" << right << setfill('.') << setw(20) << "Resuming the currently playing song" << endl;
+	cout << left << setfill('.') << setw(30) << "7 for" << right << setfill('.') << setw(20) << "Skipping to the next song" << endl;
+	cout << left << setfill('.') << setw(30) << "8 for" << right << setfill('.') << setw(20) << "Restart the currently playing song" << endl;
 }
-
-int choice;
-
-void decision(Playlist p) {
-	switch (choice) {
-	case 1:
-		PlaySound(TEXT("Follow You.wav"), NULL, SND_ASYNC);
-		cout << "Playing 'Follow You' by Imagine Dragons!" << endl;
-		break;
-	case 2:
-
-		PlaySound(TEXT("good 4 u.wav"), NULL, SND_ASYNC);
-		cout << "Playing 'good 4 u' by Olivia Rodrigo!" << endl;
-
-		break;
-	case 3:
-		p.stop();
-		cout << "Stopped the song being played!" << endl;
-		break;
-	default:
-		cout << "Bad choice! Please try again: " << endl;
-		break;
-	}
-}
-*/
 
 int main() {
-	
-	Playlist p("songs");
-	p.test();
-	Queue(p);
-	
+	Playlist p("songs");	// default playlist program uses
 
-	/*
-	bool loop = true;
+	loop = true;
 	introGUI();
+
 	while (loop) {
+		cout << "\nChoice: ";
 		cin >> choice;
-		decision();
+		switch (choice) {
+		case 1:
+			cout << "Insert a valid directory path" << endl;
+			cin >> PATH;
+			try {
+				p.setFolder(PATH);
+			}
+			catch (exception e) {
+				cout << "Directory does not contain music." << endl;
+				PATH = DEFAULT;
+			}
+			break;
+		case 2:
+			cout << "Displaying the songs within the folder: " << endl;
+			p.displayFolder();
+			break;
+		case 3:
+			cout << "What song? " << endl;
+			cin >> songChoice;
+			cout << "Playing : " << songChoice << endl;
+			break;
+		case 4:
+			cout << "Playing the queue in order! " << endl;
+			Queue(p);
+			break;
+		case 5:
+			cout << "Pausing the current playing song! " << endl;
+			p.Pause();
+			break;
+		case 6:
+			cout << "Resuming the current playing song! " << endl;
+			p.Pause();
+			break;
+		case 7:
+			cout << "Skipping to the next song! " << endl;
+			p.Skip();
+			break;
+		case 8:
+			cout << "Restarting the current playing song! " << endl;
+			p.Prev();
+			break;
+
+		default:
+			cout << "Bad choice! Please try again: " << endl;
+			break;
+		}
 
 	}
-	*/
-
-
-	/*
-	introGUI();
-	PlaySound("songs\\FollowYou.wav", NULL, SND_ASYNC);
-	Sleep(5000);
-	PlaySound(NULL, 0, 0);
-	*/
 
 }
