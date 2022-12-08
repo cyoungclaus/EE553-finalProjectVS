@@ -42,7 +42,7 @@ private:
 	int count = 0;
 	int error, NowPlaying;
 	bool Paused;
-	
+
 	void fillwav() {		// fills wav vertex with files in directory
 		for (const auto& entry : filesystem::directory_iterator(PATH)) {
 			wav.push_back(entry.path().string());
