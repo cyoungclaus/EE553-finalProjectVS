@@ -99,6 +99,7 @@ public:
 
 			if (error == 0) {
 				NowPlaying = track;
+				currentSong();
 				return true;
 			}
 			else {
@@ -161,6 +162,9 @@ public:
 			cout << wav[i] << endl;
 		}
 	}
+	void currentSong() {
+		cout << "Now playing: " << wav[track] << endl;
+	}
 };
 
 // would be used for playing a single wav file without initializing a playlist
@@ -195,7 +199,6 @@ int main() {
 
 	loop = true;
 	introGUI();
-
 	while (loop) {
 		cout << "\nChoice: ";
 		cin >> choice;
