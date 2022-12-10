@@ -1,3 +1,5 @@
+//EE553 Final Project : MP3/Wav File Player
+//Christopher Kruger, Mark Tuhacek, Christopher Youngclaus
 #include <iostream>
 #include <Windows.h>
 #include <mmsystem.h>
@@ -8,7 +10,7 @@
 #include <algorithm>
 #include <random>
 
-#pragma comment(lib, "Winmm.lib")
+#pragma comment(lib, "Winmm.lib") //necessary for universal usage, no need to add linker file
 
 using namespace std;
 
@@ -23,21 +25,20 @@ Project Properties -> General -> C++ Language Standard
 
 // used with mciSendString
 string base = "";
-LPCSTR command = "";
+LPCSTR command = ""; //necessary for future usage to pass a variable as an input for the mciSendString function
 
 // default path
 string DEFAULT = "songs";
 
 int choice, track;
 string songChoice, PATH;
-bool loop = false;
 
-class Playlist {
+class Playlist { //handles taking in every song within a folder
 private:
 	int error, NowPlaying;
 	bool Paused;
 
-	void fillwav() {		// fills wav vertex with files in directory
+	void fillwav() {		// fills wav vector with files in directory
 		for (const auto& entry : filesystem::directory_iterator(PATH)) {
 			wav.push_back(entry.path().string());
 		}
@@ -70,10 +71,10 @@ public:
 		base = "";
 		command = "";
 
-		base = "open " + fileName + " type waveaudio alias MediaFile";
+		base = "open " + fileName + " type waveaudio alias MediaFile"; //used for mciSendString function, but the function doesn't allow strings
 
-		command = base.c_str();
-		error = mciSendString(command, 0, 0, 0);
+		command = base.c_str(); //converted string to LPCSTR
+		error = mciSendString(command, 0, 0, 0); //now compatible for mciSendString function
 
 		if (error != 0) {
 			base = "open " + fileName + " alias MediaFile";
@@ -126,7 +127,7 @@ public:
 		}
 	}
 
-	void Stop() {							// stops song
+	void Stop() {							// stops song and any active function
 		command = "stop MediaFile";
 		error = mciSendString(command, 0, 0, 0);
 		Paused = false;
@@ -141,9 +142,9 @@ public:
 
 	void Skip() {							// skips song
 		Stop();
-		track = track + 1;
+		track = track + 1;					//next in the vector
 
-		if (track == wav.size()) {
+		if (track == wav.size()) {			//check if end of playlist
 			cout << "Playlist End" << endl;
 			Quit();
 		}
@@ -162,12 +163,12 @@ public:
 			cout << wav[i] << endl;
 		}
 	}
-	void currentSong() {
+	void currentSong() {			//displays the currently playing song
 		cout << "Now playing: " << wav[track] << endl;
 	}
 };
 
-// would be used for playing a single wav file without initializing a playlist
+// would be used for playing a single wav file without initializing a playlist, have not made yet due to time constraint
 class Song : public Playlist {
 
 };
@@ -178,7 +179,7 @@ void Queue(Playlist p) {						// plays folder in order
 	}
 }
 
-void introGUI() {
+void introGUI() {								//basic text GUI for playback controls
 	cout << "**********" << endl;
 	cout << "Welcome to our project!" << endl;;
 	cout << "Reading from the 'songs' folder: " << endl;
@@ -197,9 +198,9 @@ void introGUI() {
 int main() {
 	Playlist p("songs");	// default playlist program uses
 
-	loop = true;
+	bool loop = true;
 	introGUI();
-	while (loop) {
+	while (loop) {				//loops through for the user's control
 		cout << "\nChoice: ";
 		cin >> choice;
 		switch (choice) {
