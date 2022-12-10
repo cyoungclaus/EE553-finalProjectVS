@@ -243,6 +243,8 @@ int main() {
 			p.Quit();
 			break;
 		default:
+			cin.clear();
+			cin.ignore(99, '\n');
 			cout << "Bad choice! Please try again: " << endl;
 			break;
 		}
